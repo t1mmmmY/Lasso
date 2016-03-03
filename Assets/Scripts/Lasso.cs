@@ -10,8 +10,6 @@ public class Lasso : MonoBehaviour
 	[SerializeField] int step = 10;
 
 	[SerializeField] Color targetColor;
-//	[SerializeField] MeshRenderer targetImage;
-//	[SerializeField] Material targetMaterial;
 	[SerializeField] RawImage targetImage;
 
 	WebCamTexture sourceImage;
@@ -23,8 +21,36 @@ public class Lasso : MonoBehaviour
 	Texture2D tex;
 	Color[] pixels;
 	bool done = false;
+	bool valueChanged = false;
 
 	Camera cam;
+
+
+
+	public void ChangeSensitivity(Slider slider)
+	{
+		valueChanged = true;
+		sensitivity = slider.value;
+	}
+
+	public void ChangeQuality(Dropdown dropdown)
+	{
+		valueChanged = true;
+
+		switch (dropdown.value)
+		{
+			case 0: //Low
+				step = 8;
+				break;
+			case 1: // Medium
+				step = 4;
+				break;
+			case 2: //High
+				step = 1;
+				break;
+		}
+	}
+
 
 	void Awake()
 	{
@@ -46,19 +72,21 @@ public class Lasso : MonoBehaviour
 		done = true;
 	}
 
-//	void OnGUI()
-//	{
-//		if (GUILayout.Button("Change Color"))
-//		{
-//			ChangeColor();
-//		}
-//	}
 
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+//		if (Input.GetMouseButtonDown(0))
+//		{
+//			SelectColor();
+//		}
+		if (Input.GetMouseButtonUp(0))
 		{
-			SelectColor();
+			if (!valueChanged)
+			{
+				SelectColor();
+			}
+
+			valueChanged = false;
 		}
 
 		if (done)
