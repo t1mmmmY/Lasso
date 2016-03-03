@@ -59,12 +59,21 @@ public class Lasso : MonoBehaviour
 
 		if (done)
 		{
-			done = false;
 			pixels = sourceImage.GetPixels();
+
+			Debug.Log(new Vector2(tex.width, tex.height).ToString() + " = " + (tex.width * tex.height).ToString() + "; " + pixels.Length.ToString());
+			if (tex.width * tex.height > pixels.Length)
+			{
+				return;
+			}
+
+			done = false;
+
 //			pixels = ((WebCamTexture)(targetImage.material.mainTexture)).GetPixels();
 			Loom.RunAsync(ChangeColor);
 			
 			oldSensitivity = sensitivity;
+
 		}
 	}
 
@@ -114,6 +123,7 @@ public class Lasso : MonoBehaviour
 //				Debug.Log("Set pixel");
 			}
 		}
+
 
 		Loom.QueueOnMainThread(() =>
 		                       {
