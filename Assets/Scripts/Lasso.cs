@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Lasso : MonoBehaviour 
 {
@@ -9,7 +10,10 @@ public class Lasso : MonoBehaviour
 	[SerializeField] int step = 10;
 
 	[SerializeField] Color targetColor;
-	[SerializeField] MeshRenderer targetImage;
+//	[SerializeField] MeshRenderer targetImage;
+//	[SerializeField] Material targetMaterial;
+	[SerializeField] RawImage targetImage;
+
 	WebCamTexture sourceImage;
 
 	float oldSensitivity;
@@ -61,7 +65,7 @@ public class Lasso : MonoBehaviour
 		{
 			pixels = sourceImage.GetPixels();
 
-			Debug.Log(new Vector2(tex.width, tex.height).ToString() + " = " + (tex.width * tex.height).ToString() + "; " + pixels.Length.ToString());
+//			Debug.Log(new Vector2(tex.width, tex.height).ToString() + " = " + (tex.width * tex.height).ToString() + "; " + pixels.Length.ToString());
 			if (tex.width * tex.height > pixels.Length)
 			{
 				return;
@@ -79,23 +83,21 @@ public class Lasso : MonoBehaviour
 
 	void SelectColor()
 	{
+		Vector3 point = cam.ScreenToViewportPoint(Input.mousePosition);
 
-		RaycastHit hit;
-		if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
-			return;
-		
-//		Renderer rend = hit.transform.GetComponent<Renderer>();
-//		MeshCollider meshCollider = hit.collider as MeshCollider;
-//		if (rend == null || rend.sharedMaterial == null || rend.sharedMaterial.mainTexture == null || meshCollider == null)
+		targetColor = sourceImage.GetPixel((int)(point.x * sourceImage.width), (int)(point.y * sourceImage.height));
+
+//		RaycastHit hit;
+//		if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
 //			return;
-
-		Vector2 pixelUV = hit.textureCoord;
-		pixelUV.x *= sourceImage.width;
-		pixelUV.y *= sourceImage.height;
-
-
-		targetColor = sourceImage.GetPixel((int)pixelUV.x, (int)pixelUV.y);
-//		targetColor = sourceImage.GetPixel(-(int)Input.mousePosition.x, (int)Input.mousePosition.y);
+//		
+//
+//		Vector2 pixelUV = hit.textureCoord;
+//		pixelUV.x *= sourceImage.width;
+//		pixelUV.y *= sourceImage.height;
+//
+//
+//		targetColor = sourceImage.GetPixel((int)pixelUV.x, (int)pixelUV.y);
 	}
 
 	void ChangeColor()
@@ -130,7 +132,9 @@ public class Lasso : MonoBehaviour
 			tex.SetPixels(pixels);
 			tex.Apply();
 
-			targetImage.material.SetTexture("_MainTex", tex);
+//			targetImage.material.SetTexture("_MainTex", tex);
+//			targetMaterial.SetTexture("_MainTex", tex);
+			targetImage.texture = tex;
 			done = true;
 		});
 	}

@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PhoneCamera : MonoBehaviour 
 {
-	[SerializeField] Renderer targetRender;
+//	[SerializeField] Renderer targetRender;
+//	[SerializeField] Material targetMaterial;
 	[SerializeField] Vector2 targetSize = new Vector2(640, 400);
 	[SerializeField] int targetFrameRate = 60;
 
@@ -17,7 +18,8 @@ public class PhoneCamera : MonoBehaviour
 		webcamTexture = new WebCamTexture((int)targetSize.x, (int)targetSize.y, targetFrameRate);
 		Debug.Log(webcamTexture.deviceName);
 
-		targetRender.material.mainTexture = webcamTexture;
+//		targetRender.material.mainTexture = webcamTexture;
+//		targetMaterial.mainTexture = webcamTexture;
 		webcamTexture.Play();
 
 		if (onInitCamera != null)
